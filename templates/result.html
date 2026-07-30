@@ -1,47 +1,43 @@
-<!DOCTYPE html>
-<html lang="en" >
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <title>Review Page</title>
+{% block head %}
+<title>Image Results - {{ query }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+{% block body %}
+<div class="container">
+    <div class="header-bar">
+        <h1>Scraped Images for: <span>"{{ query }}"</span></h1>
+        <a href="/" class="btn-back">← Back to Search</a>
+    </div>
 
+    {% if error %}
+    <div class="alert alert-error">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
 
-      <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-
-</head>
-
-<body>
-
-  <div class="table-users">
-   <div class="header">Reviews</div>
-
-   <table cellspacing="0">
-      <tr>
-         <th>Product</th>
-         <th>Name</th>
-         <th>Rating</th>
-         <th>Comment Heading</th>
-         <th>mycomment </th>
-         <th width="230">Comments</th>
-      </tr>
-         {% for review in reviews %}
-      <tr>
-          <td>{{review['Product']}}</td>
-         <td>{{review['Name']}}</td>
-         <td>{{review['Rating']}}</td>
-         <td>{{review['CommentHead']}}</td>
-         <td>{{review['Comment']}} </td>
-         <td>{{review['Comment']}} </td>
-       {% endfor %}
-   </table>
+    {% if images %}
+    <p class="subtitle">Saved <strong>{{ images|length }}</strong> images locally to device (<code>images/</code> folder)</p>
+    <div class="image-grid">
+        {% for img in images %}
+        <div class="image-card">
+            <div class="image-wrapper">
+                <img src="{{ img.url }}" alt="{{ img.filename }}" loading="lazy">
+            </div>
+            <div class="card-details">
+                <span class="img-badge">#{{ img.index }}</span>
+                <span class="filename" title="{{ img.filename }}">{{ img.filename }}</span>
+                <a href="{{ img.url }}" download="{{ img.filename }}" class="btn-download" target="_blank">Download</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif not error %}
+    <div class="alert alert-info">
+        <p>No images were saved for "{{ query }}".</p>
+    </div>
+    {% endif %}
 </div>
-
-
-
-</body>
-
-</html>
+{% endblock %}

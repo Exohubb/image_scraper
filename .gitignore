@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+scrapper.log
+
+# Environments
+venv/
+.venv/
+env/
+
+# Scraped image files (keep directory structure)
+images/*
+!images/.gitkeep
+
+# IDE / OS metadata
+.DS_Store
+.vscode/
+.idea/
